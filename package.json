@@ -1,0 +1,26 @@
+{
+  "name": "blogproject",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"cross-env NODE_ENV=dev nodemon ./bin/www.js",
+    "prd":"cross-env NODe_ENV=production nodemon ./bin/www.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RR1335/BlogProject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RR1335/BlogProject/issues"
+  },
+  "homepage": "https://github.com/RR1335/BlogProject#readme",
+  "description": "",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.9"
+  }
+}
