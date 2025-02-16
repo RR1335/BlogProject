@@ -5,6 +5,10 @@ const handleUserRouter = require('./src/router/user')
 const serverHandle = (req,res) => {
     res.setHeader('Content-type','application/json')
 
+    // 统一定义 url 的获取
+    const url = req.url
+    req.path = url.split('?')[0]
+
     const blogData = handleBlogRouter(req,res)
     if (blogData) {
         res.end (
