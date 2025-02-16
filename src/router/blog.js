@@ -39,7 +39,7 @@ const handleBlogRouter = (req,res) => {
         }
     }
 
-
-    
-
 }
+
+// 输出函数
+module.exports = handleBlogRouter
