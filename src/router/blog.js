@@ -1,8 +1,13 @@
-const { getList , getDetail } = require('../controller/blog')
+const { getList , 
+        getDetail , 
+        newBlog,
+        delBlog,
+        updateBlog } = require('../controller/blog')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
 
 const handleBlogRouter = (req,res) => {
     const method = req.method
+    const id  = req.query.id
     // const url = req.url
     // const path = url.split('?')[0]
 
@@ -19,13 +24,6 @@ const handleBlogRouter = (req,res) => {
 
     // 获取博客 Detail
     if (method === 'GET' && req.path === '/api/blog/detail') {
-        // 获取 id 
-        const id  = req.query.id
-        // console.log(req.query)
-        // console.log('======================================')
-        // console.log(req)
-        // console.log('======================================')
-        // console.log(req.data)
         const data = getDetail(id)
         
         return new SuccessModel(data)
@@ -33,23 +31,36 @@ const handleBlogRouter = (req,res) => {
 
 
     // 新建博客 new
-    if (method === 'POST' && req.path === '/api/blog/now') {
-        return {
-            msg: '新建博客 new'
-        }
+    if (method === 'POST' && req.path === '/api/blog/new') {
+        const blogData = req.body
+
+        const data = newBlog(blogData)
+        return new SuccessModel(data)
+
     }
 
     // 更新博客 update
     if (method === 'POST' && req.path === '/api/blog/update') {
-        return {
-            msg: '更新博客 update'
+        // id 在头部有定义
+        const blogData = req.body
+        const result = updateBlog(id, blogData)
+
+        if (result) {
+            return new SuccessModel()
+        } else {
+            return new ErrorModel('更新博客失败 api/blog/update')
         }
+
     }
 
     // 删除博客 update
     if (method === 'POST' && req.path === '/api/blog/del') {
-        return {
-            msg: '删除博客 del'
+        // id 已经定义了
+        const result = delBlog(id)
+        if (result) {
+            return new  SuccessModel()
+        } else {
+            return new ErrorModel('删除微博失败 api/blog/del')
         }
     }
 

@@ -32,8 +32,38 @@ const getDetail = (id) => {
         }
 }
 
+
+const newBlog = (blogData = {}) => {
+    // blogData 是博客的对象，包含 blog 的所有属性值
+
+    return {
+        id: 3     // 表示新建博客插入博客表的位置 —— 3
+    }
+}
+
+const updateBlog = (id, blogData = {}) => {
+    // id ，即将更新的Blog的 id
+    // blogData 是博客对象
+
+    // 测试
+    // console.log('Updata Blog: ' ,id , blogData)
+
+    return true
+
+}
+
+const delBlog = (id) => {
+    // 传参 id ，返回 true 
+
+    return  true
+}
+
+
 module.exports = {
     getList,
-    getDetail
+    getDetail,
+    newBlog,
+    updateBlog,
+    delBlog
 
 }
