@@ -16,17 +16,26 @@ const handleBlogRouter = (req,res) => {
         const author = req.query.author || ''
         const keyword = req.query.keyword || ''
 
-        const listData = getList(author, keyword)
+        const result = getList(author,keyword)
+        return result.then(listData => {
+            return new SuccessModel(listData)
+        })
 
-        // 按照格式输出内容
-        return new SuccessModel(listData)
+        // const listData = getList(author, keyword)
+
+        // // 按照格式输出内容
+        // return new SuccessModel(listData)
     }  
 
     // 获取博客 Detail
     if (method === 'GET' && req.path === '/api/blog/detail') {
-        const data = getDetail(id)
-        
-        return new SuccessModel(data)
+        const result = getDetail(id)
+        return result.then(idData => {
+            return new SuccessModel(idData)
+        })
+
+        // const data = getDetail(id)
+        // return new SuccessModel(data)
     }
 
 
@@ -34,8 +43,14 @@ const handleBlogRouter = (req,res) => {
     if (method === 'POST' && req.path === '/api/blog/new') {
         const blogData = req.body
 
-        const data = newBlog(blogData)
-        return new SuccessModel(data)
+        req.body.author = 'san' // 等开发了登录模块，再调整
+        const result = newBlog(blogData)
+        return result.then(data => {
+            return new SuccessModel(data)
+        })
+
+        // const data = newBlog(blogData)
+        // return new SuccessModel(data)
 
     }
 
@@ -45,23 +60,27 @@ const handleBlogRouter = (req,res) => {
         const blogData = req.body
         const result = updateBlog(id, blogData)
 
-        if (result) {
-            return new SuccessModel()
-        } else {
-            return new ErrorModel('更新博客失败 api/blog/update')
-        }
-
+        return result.then(val => {
+            if (val) {
+                return new SuccessModel()
+            } else {
+                return new ErrorModel('更新博客失败 api/blog/update')
+            }    
+        })
     }
 
     // 删除博客 update
     if (method === 'POST' && req.path === '/api/blog/del') {
         // id 已经定义了
-        const result = delBlog(id)
-        if (result) {
-            return new  SuccessModel()
-        } else {
-            return new ErrorModel('删除微博失败 api/blog/del')
-        }
+        const author = 'san'
+        const result = delBlog(id,author)
+        return result.then(delVal => {
+            if (delVal) {
+                return new  SuccessModel()
+            } else {
+                return new ErrorModel('删除微博失败 api/blog/del')
+            }
+        })
     }
 
 }

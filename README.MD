@@ -37,4 +37,13 @@ RR1335 Beginning
 
 第四： MySQL数据库
 
+    配置 MYSQL ，config/db.js 配置文件。
+    配置文件的 production 环境变量需要更新到实际的环境中，有PM2执行的时候的配置。
+
+
+第五：数据库执行函数
+
+    exec ，src/db 数据库的执行函数。这里的 conn.connect() 为持续连接。
+    暂时定义结束执行 end() 通过 mysql 的命令行结束。
+
 

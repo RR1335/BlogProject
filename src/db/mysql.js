@@ -11,7 +11,7 @@ conn.connect(function(err) {
       return;
     }
   
-    console.log('connected as id ' + connection.threadId);
+    console.log('connected as id ' + conn.threadId);
   })
   // 最简单的方式
   // conn.connect()

@@ -42,18 +42,30 @@ const serverHandle = (req,res) => {
     //解析 query
     req.query = querystring.parse(url.split('?')[1])
 
-    // 处理 post data
+    // 处理 post data  
     getPostData(req).then(postData => {
         req.body = postData
 
-        // 处理 blog 路由
-        const blogData = handleBlogRouter(req,res)
-        if (blogData) {
-            res.end (
-                JSON.stringify(blogData)
-            )
+        // 处理 blog 路由，， mysql执行exec返回 promise
+        const blogResult = handleBlogRouter(req,res)
+        if (blogResult) {
+            blogResult.then(blogData => {
+                res.end(
+                    JSON.stringify(blogData)
+                )
+            })
             return
         }
+
+
+        // 直接返回值，
+        // const blogData = handleBlogRouter(req,res)
+        // if (blogData) {
+        //     res.end (
+        //         JSON.stringify(blogData)
+        //     )
+        //     return
+        // }
     
 
         const userData = handleUserRouter(req,res)
