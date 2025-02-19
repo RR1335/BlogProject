@@ -18,10 +18,6 @@ RR1335 Beginning
 
 
 
-
-
-
-
 拆分路由和控制层
 
     Controller 核心解决数据处理。
@@ -51,3 +47,9 @@ RR1335 Beginning
 
     已登录，返回 undefine ；
     未登录，返回 未登录的提示信息。所以，未登录 loginCheck 有 value 返回。
+
+第七：http-server启动web服务器调试
+
+    前端页面，很简单，用于调试使用。
+    用 nginx 反向代理实现。
+
