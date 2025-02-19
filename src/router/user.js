@@ -2,11 +2,11 @@ const { signin } = require('../controller/user')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
 
 // 设置 Cookie 过期时间
-const getCookieExpires = () => {
-    const d = new Date()
-    d.setTime(d.getTime() + (24 * 60 * 60 * 1000))
-    return d.toGMTString()
-}
+// const getCookieExpires = () => {
+//     const d = new Date()
+//     d.setTime(d.getTime() + (24 * 60 * 60 * 1000))
+//     return d.toGMTString()
+// }
 
 
 // 登录 
@@ -14,15 +14,23 @@ const handleUserRouter = (req,res) => {
     const method = req.method    // Get 
 
     //登录 Login
-    if (method === 'POST' && req.path === '/api/user/login') {
-        const {username, password} = req.body
+    if (method === 'GET' && req.path === '/api/user/signin') {
+        // 测试 method 改成了 GET， POST - body
+        const {username, password} = req.query
         const result = signin(username,password)
         
         return result.then( data => {
             if (data.username) {
 
-                // 设置 Cookie
-                res.setHeader('Set-Cookie',`username=${data.username} ; path = / ; httpOnly; expires = ${getCookieExpires}`)
+                //设置 session 
+                req.session.username = data.username
+                req.session.realname = data.realname
+
+                // 测试打印
+                // console.log('req.session :  ', req.session )
+
+                // 设置 Cookie (app.js)
+                // res.setHeader('Set-Cookie',`username=${data.username} ; path = / ; httpOnly; expires = ${getCookieExpires}`)
 
                 return new SuccessModel()
             }
@@ -33,8 +41,13 @@ const handleUserRouter = (req,res) => {
 
     // 登录信息检查
     if (method ==='GET' && req.path === '/api/user/signin-test') {
-        if (req.cookie.username) {
-            return Promise.resolve(new  SuccessModel())
+        if (req.session.username) {
+            return Promise.resolve(
+                new  SuccessModel({
+                    // username:req.session.username
+                    session : req.session 
+                })
+            )
         }
         return Promise.resolve(new ErrorModel('Not Login'))
     }
