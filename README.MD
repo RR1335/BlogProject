@@ -47,3 +47,7 @@ RR1335 Beginning
     暂时定义结束执行 end() 通过 mysql 的命令行结束。
 
 
+第六： 登录状态
+
+    已登录，返回 undefine ；
+    未登录，返回 未登录的提示信息。所以，未登录 loginCheck 有 value 返回。

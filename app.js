@@ -1,4 +1,5 @@
 const querystring = require('querystring')
+const { set,get } = require('./src/db/redis')
 const handleBlogRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
 
@@ -10,7 +11,7 @@ const getCookieExpires = () => {
 }
 
 // session data 
-const SESSION_DATA = {}
+// const SESSION_DATA = {}
 
 
 // 以 promise 的方式，解析 post data 
@@ -69,22 +70,49 @@ const serverHandle = (req,res) => {
     // console.log('req.cookie is: ',req.cookie)
 
     // 解析 session 
+    // let needSetCookie = false
+    // let userId = req.cookie.userid 
+    // if (userId) {
+    //     if (!SESSION_DATA[userId]){
+    //         SESSION_DATA[userId] = {}
+    //     }
+    // } else {
+    //     needSetCookie = true
+    //     userId = `${Date.now()}_${Math.random()}`
+    //     SESSION_DATA[userId] = {}
+    // }
+    // req.session = SESSION_DATA[userId]
+
+    // redis ,解析 session
     let needSetCookie = false
-    let userId = req.cookie.userid 
-    if (userId) {
-        if (!SESSION_DATA[userId]){
-            SESSION_DATA[userId] = {}
-        }
-    } else {
+    let userId = req.cookie.userid
+
+    if (!userId) {
         needSetCookie = true
         userId = `${Date.now()}_${Math.random()}`
-        SESSION_DATA[userId] = {}
+        //初始化 redis 中 session Value
+        set(userId, {})
     }
-    req.session = SESSION_DATA[userId]
 
+    // 获取 session 
+    req.sessionId = userId
+    get(req.sessionId).then(sessionData => {
+        if (sessionData == null) {
+            // 初始化 redis 中 session 值
+            set(req.sessionId, {})
+            // 设置 session 
+            req.session ={}
+        } else {
+            //设置 session
+            req.session = sessionData
+        }
 
-    // 处理 post data  
-    getPostData(req).then(postData => {
+        console.log('req.session ', req.session) // 开发环节，监测数据
+
+        // 处理 post data
+        return getPostData(req)
+    })
+    .then(postData => {
         req.body = postData
 
         // 处理 blog 路由，， mysql执行exec返回 promise

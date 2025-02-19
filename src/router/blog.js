@@ -5,6 +5,17 @@ const { getList ,
         updateBlog } = require('../controller/blog')
 const { SuccessModel, ErrorModel } = require('../model/resModel')
 
+//登录验证的函数
+const loginCheck = (req) => {
+    if (!req.session.username) {
+        return Promise.resolve(
+            new ErrorModel('Not Sign in .')
+        )
+    }      
+}
+
+
+
 const handleBlogRouter = (req,res) => {
     const method = req.method
     const id  = req.query.id
@@ -43,7 +54,17 @@ const handleBlogRouter = (req,res) => {
     if (method === 'POST' && req.path === '/api/blog/new') {
         const blogData = req.body
 
-        req.body.author = 'san' // 等开发了登录模块，再调整
+        // 登录状态检查
+        const loginCheckResult = loginCheck(req)
+        if (loginCheckResult) {
+            // 未登录
+            return loginCheck
+        }
+
+        // req.body.author = 'san' // 等开发了登录模块，再调整
+        // 读取 session 的字段
+        req.body.author = req.session.username
+
         const result = newBlog(blogData)
         return result.then(data => {
             return new SuccessModel(data)
@@ -60,6 +81,13 @@ const handleBlogRouter = (req,res) => {
         const blogData = req.body
         const result = updateBlog(id, blogData)
 
+         // 登录状态检查
+        const loginCheckResult = loginCheck(req)
+        if (loginCheckResult) {
+            // 未登录
+            return loginCheck
+        }
+
         return result.then(val => {
             if (val) {
                 return new SuccessModel()
@@ -72,8 +100,19 @@ const handleBlogRouter = (req,res) => {
     // 删除博客 update
     if (method === 'POST' && req.path === '/api/blog/del') {
         // id 已经定义了
-        const author = 'san'
+        // const author = 'san'
+            // 登录状态检查
+            const loginCheckResult = loginCheck(req)
+            if (loginCheckResult) {
+                // 未登录
+                return loginCheck
+            }
+        
+            
+        const author = req.session.username
+
         const result = delBlog(id,author)
+
         return result.then(delVal => {
             if (delVal) {
                 return new  SuccessModel()
