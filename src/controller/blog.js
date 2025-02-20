@@ -1,4 +1,5 @@
 const { exec } = require('../db/mysql')
+const xss = require('xss')
 
 const getList = (author,keyword) => {
     let sql = `select * from blogs where 1=1 ` //注意 1=1 后应该有一个空格
@@ -28,8 +29,8 @@ const getDetail = (id) => {
 
 const newBlog = (blogData = {}) => {
     // blogData 是博客的对象，包含 blog 的所有属性值
-    const title = blogData.title
-    const content = blogData.content
+    const title = xss(blogData.title)
+    const content = xss(blogData.content)
     const createtime = Date.now()
     const author = blogData.author
 

@@ -33,5 +33,6 @@ conn.connect(function(err) {
 
   //返回
   module.exports = {
-    exec
+    exec,
+    escape : mysql.escape
   }

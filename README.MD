@@ -58,4 +58,8 @@ RR1335 Beginning
 
     Logs的处理，以文件方式处理日志。
 
+第九： 防止SQL注入
 
+    通过 escape 防止 SQL 注入；所有需要input且参与SQL的字段全部要有类似的处理：
+    username = escape(username)
+    escape() 定义在了 mysql.js 中。
