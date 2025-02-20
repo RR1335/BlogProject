@@ -5,7 +5,7 @@ const path = require('path')
 function createWriteStream(fileName) {
     const fullFileName = path.join(__dirname,'../','logs',fileName)
     const writeStream = fs.createWriteStream(fullFileName, {
-        flogs: 'a'      // 追加
+        flags: 'a'      // 追加
     })
     return writeStream
 }
