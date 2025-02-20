@@ -7,12 +7,12 @@ const signin = (username,password) => {
     username = escape(username)
     password = escape(password)
 
-    // 生成加密密码
+    // 生成加密密码, 对SQL的password加单引号
     password = genPassword(password)
 
     // 去掉 username=‘${username}’ and password=’${password}‘ 去掉单引号
     const sql = `
-        select username , realname from users where username=${username} and password=${password}
+        select username , realname from users where username=${username} and password='${password}'
     `
     return exec(sql).then(rows => {
         return rows[0] || {}
