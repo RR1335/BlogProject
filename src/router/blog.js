@@ -24,8 +24,21 @@ const handleBlogRouter = (req,res) => {
 
     // 获取博客 List
     if (method === 'GET' && req.path === '/api/blog/list') {
-        const author = req.query.author || ''
+        let author = req.query.author || ''            // 要检查登录用户
         const keyword = req.query.keyword || ''
+
+        // 检查是否是当前用户 ， isadmin = 1 配置在前端页面
+        // if (req.query.isadmin) {
+        //     // 管理员界面
+        //     const loginCheckResult = loginCheck(req)
+        //     if (loginCheckResult) {
+        //         // 未登录
+        //         return loginCheckResult
+        //     }
+
+        //     author = req.session.username
+        // }
+
 
         const result = getList(author,keyword)
         return result.then(listData => {
@@ -58,7 +71,7 @@ const handleBlogRouter = (req,res) => {
         const loginCheckResult = loginCheck(req)
         if (loginCheckResult) {
             // 未登录
-            return loginCheck
+            return loginCheckResult
         }
 
         // req.body.author = 'san' // 等开发了登录模块，再调整
@@ -85,7 +98,7 @@ const handleBlogRouter = (req,res) => {
         const loginCheckResult = loginCheck(req)
         if (loginCheckResult) {
             // 未登录
-            return loginCheck
+            return loginCheckResult
         }
 
         return result.then(val => {
@@ -105,7 +118,7 @@ const handleBlogRouter = (req,res) => {
             const loginCheckResult = loginCheck(req)
             if (loginCheckResult) {
                 // 未登录
-                return loginCheck
+                return loginCheckResult
             }
         
             
