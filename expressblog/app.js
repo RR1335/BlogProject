@@ -1,15 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+// import { RedisStore} from "connect-redis";
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
+const {RedisStore} = require('connect-redis');
 
-// var indexRouter = require('./routes/index');
-// var usersRouter = require('./routes/users');
+const redisClient = require('./db/redis');
+
+// const indexRouter = require('./routes/index');
+// const usersRouter = require('./routes/users');
 const blogRouter = require('./routes/blog')
 const userRouter = require('./routes/user')
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,6 +25,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
+
+const sessionStore = new RedisStore({
+  client : redisClient,
+  prefix : "BlogAPP : "
+})
+
+// The default value is { path: '/', httpOnly: true, secure: false, maxAge: null }.
+app.use(session({
+  secret: 'jfiewo34*U(Ukj32@NKJH3#JLkj',
+  cookie:{
+    path: '/',             // 默认配置
+    httpOnly: true,        // 默认配置
+    maxAge: 24 * 60 * 60 * 1000
+  },
+  store: sessionStore
+}))
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);
