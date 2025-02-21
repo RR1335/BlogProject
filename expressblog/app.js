@@ -1,6 +1,7 @@
 // import { RedisStore} from "connect-redis";
 const createError = require('http-errors');
 const express = require('express');
+const fs = require('fs')
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -20,7 +21,21 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(logger('dev'));
+const ENV = process.env.NODE_ENV
+if ( ENV !== 'production' ) {
+  app.use(logger('dev'))
+} else {
+  const logFilename = path.join(__dirname,'logs','access.log')
+  const writeStream = fs.createWriteStream(logFilename, {
+    flags: 'a'
+  })
+  app.use(logger('combined', {
+    stream: writeStream
+  }))
+}
+
+
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
