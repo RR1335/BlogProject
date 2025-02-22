@@ -1,5 +1,13 @@
 RR1335 Beginning
 
+这是用 “node”的基础能力，和express、koa2两个框架，分别写了一遍同一个业务。
+从而，从原理上理解路由、中间件和框架的实现方法与逻辑。
+
+默认的 / 下是 node 实现的逻辑。
+koa 是通过 koa2 实现的逻辑，用 async / await 实现异步处理。
+express 是 node 的第一大框架，不过 callback 确实造成了代码的理解与实践的问题。
+
+
 第一：路由初始化
 
     将路由和数据处理分开。
@@ -88,3 +96,8 @@ RR1335 Beginning
     koa2 的路由执行，是从express拷贝过来了，注解并保留了 express 代码，主要是为了对比 express和koa2代码的情况。
     深刻体现 koa2 开发的简洁和顺畅。
 
+
+第十三： 日志 Morgan
+
+    express and koa2 日志的实现都是 morgan 。
+    

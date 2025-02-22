@@ -7,6 +7,10 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require('koa-generic-session')
 const redisStore = require('koa-redis')
+const fs = require('node:fs')
+const path = require('node:path')
+const morgan = require('koa-morgan')
+
 
 const { REDIS_CONF } = require('./config/db')
 
@@ -38,6 +42,19 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+
+const ENV = process.env.NODE_ENV
+if ( ENV !== 'production' ) {
+  app.use(morgan('dev'))
+} else {
+  const logFilename = path.join(__dirname,'logs','access.log')
+  const writeStream = fs.createWriteStream(logFilename, {
+    flags: 'a'
+  })
+  app.use(morgan('combined', {
+    stream: writeStream
+  }))
+}
 
 // redis and session 要实现在 routers 注册之前
 
