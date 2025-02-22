@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 
-// // 使用 Promise 获取文件
+// 使用 Promise 获取文件
 function getFileContent(fileName) {
     const promise = new Promise((resolve,reject)=> {
             const fullFilename = path.resolve(__dirname,'files',fileName)
@@ -22,15 +22,15 @@ function getFileContent(fileName) {
 }
 
 // // Promise 链式引用 和 then操作
-// getFileContent('a.json').then(aData => {
-//     console.log('a Data:', aData)
-//     return getFileContent(aData.next)
-// }).then(bData => {
-//     console.log("b Data: ", bData)
-//     return getFileContent(bData.next)
-// }).then(cData => {
-//     console.log("c Data:" ,cData)
-// })
+getFileContent('a.json').then(aData => {
+    console.log('a Data:', aData)
+    return getFileContent(aData.next)
+}).then(bData => {
+    console.log("b Data: ", bData)
+    return getFileContent(bData.next)
+}).then(cData => {
+    console.log("c Data:" ,cData)
+})
 
 
 // 异步函数 async / await 处理

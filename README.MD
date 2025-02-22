@@ -83,4 +83,8 @@ RR1335 Beginning
          "dev":"cross-env NODE_ENV=dev nodemon ./bin/www"
      },
 
-第十二：
+第十二：Koa2 的路由说明
+
+    koa2 的路由执行，是从express拷贝过来了，注解并保留了 express 代码，主要是为了对比 express和koa2代码的情况。
+    深刻体现 koa2 开发的简洁和顺畅。
+
