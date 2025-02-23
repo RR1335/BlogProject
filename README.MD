@@ -101,3 +101,12 @@ express 是 node 的第一大框架，不过 callback 确实造成了代码的�
 
     express and koa2 日志的实现都是 morgan 。
     
+
+特别说明：
+
+    LOG FILES 没有同步到 GitHub，代码中的目录涉及到 LOG FILES 目录和文件的需要通过阅读代码设置。
+
+    PM2 的部分，涉及到了 conf.json 文件；但，并没有给出 PM2 start 需要的 Script 相关文件。
+
+    
+    
